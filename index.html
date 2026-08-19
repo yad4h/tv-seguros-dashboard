@@ -687,7 +687,8 @@ const pagesDef = [
 
 const slides = [];
 const container = document.getElementById('slides');
-const genDate = new Date(window.DATA.generated_at).toLocaleDateString('pt-BR');
+const [gy,gm,gd] = window.DATA.generated_at.split('-');
+const genDate = `${gd}/${gm}/${gy}`;
 
 window.DATA.products.forEach(prod=>{
   // Splash
