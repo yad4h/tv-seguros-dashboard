@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="3600">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TV Seguros — PicPay</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0D1117;--surface:#161B22;--s2:#1C2533;--border:#30404F;
+  --green:#00C88C;--red:#FF4D4D;--yellow:#FFD700;--blue:#00BFFF;
+  --text:#E6EDF3;--muted:#8B949E;
+  --page-dur:20s;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;font-size:15px}
+#slides{position:absolute;inset:0;width:1920px;height:var(--slide-h,1080px)}
+.slide{position:absolute;inset:0;width:1920px;height:var(--slide-h,1080px);display:none;flex-direction:column;overflow:hidden}
+.slide.active{display:flex}
+
+/* ── Header ── */
+.header{display:flex;align-items:center;padding:0 44px;border-bottom:1px solid var(--border);height:80px;flex-shrink:0;gap:22px}
+.header-logo{font-size:24px;font-weight:800;color:var(--green);letter-spacing:-0.5px;white-space:nowrap}
+.header-divider{width:1px;height:32px;background:var(--border)}
+.header-squad{font-size:28px;font-weight:800;color:#fff;letter-spacing:-0.5px;white-space:nowrap}
+.header-title{font-size:32px;font-weight:800;color:#fff;flex:1;letter-spacing:-0.5px;line-height:1}
+.header-page{font-size:18px;font-weight:700;color:#C0CAD4;white-space:nowrap}
+.header-date{font-size:14px;color:var(--muted);white-space:nowrap}
+
+/* ── Body ── */
+.body{flex:1;padding:24px 40px;overflow:hidden;display:flex;flex-direction:column;gap:16px}
+
+/* ── Table ── */
+.tbl-wrap{flex:1;overflow:hidden;border-radius:10px;border:1px solid var(--border);background:var(--surface)}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+thead th{background:var(--s2);color:var(--muted);font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:18px 16px;text-align:center;position:sticky;top:0;z-index:2;border-bottom:2px solid var(--border)}
+thead th:first-child{text-align:left;font-size:18px;color:var(--text)}
+tbody td{padding:16px 16px;text-align:center;font-size:22px;font-weight:600;color:var(--text);border-bottom:1px solid rgba(48,64,79,0.4);line-height:1.3}
+tbody td:first-child{text-align:left;font-size:20px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+tbody tr:nth-child(even){background:rgba(28,37,51,0.4)}
+tbody tr:hover{background:rgba(0,200,140,0.05)}
+/* Valores numéricos */
+.num{font-variant-numeric:tabular-nums;font-size:24px;font-weight:700}
+.num.muted{color:var(--muted)}
+/* Variação % */
+.var{font-size:20px;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.var.pos{color:var(--green)}
+.var.neg{color:var(--red)}
+.var.neu{color:var(--muted)}
+/* Sublabel */
+.sublabel{font-size:13px;color:var(--muted);font-weight:500;margin-top:2px}
+
+/* ── Progress bar ── */
+.progress-bar{position:fixed;bottom:0;left:0;right:0;height:5px;background:var(--border);z-index:9999}
+.progress-fill{height:100%;background:var(--green);transition:width .3s}
+</style>
+</head>
+<body>
+<div class="progress-bar"><div class="progress-fill" id="global-progress"></div></div>
+<div id="slides"></div>
+<script>
+window.DATA = {"generated_at": "27/08/2026 às 16:43", "squads": [{"name": "Saúde/Vida", "products": [{"id": "3", "name": "Seguro de Vida", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 2155, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.0338, "mtd": 48993, "var_pct_mtd_vs_mes_anterior": -0.154, "var_pct_mtd_vs_forecast": -0.1655, "var_pct_mtd_vs_orcamento": -0.1081, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 2882, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.0446, "mtd": 61562, "var_pct_mtd_vs_mes_anterior": 0.018, "var_pct_mtd_vs_forecast": 0.1198, "var_pct_mtd_vs_orcamento": 0.1943, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "12", "name": "Assistência Saúde", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 385, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.0072, "mtd": 9332, "var_pct_mtd_vs_mes_anterior": 0.137, "var_pct_mtd_vs_forecast": 0.1127, "var_pct_mtd_vs_orcamento": -0.1441, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 407, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": -0.0966, "mtd": 9345, "var_pct_mtd_vs_mes_anterior": 0.01, "var_pct_mtd_vs_forecast": -0.0106, "var_pct_mtd_vs_orcamento": 0.013, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "20", "name": "Assistência Funeral", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 75, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.3453, "mtd": 1604, "var_pct_mtd_vs_mes_anterior": 1.259, "var_pct_mtd_vs_forecast": 0.275, "var_pct_mtd_vs_orcamento": null, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 19, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.1692, "mtd": 508, "var_pct_mtd_vs_mes_anterior": 2.342, "var_pct_mtd_vs_forecast": 0.2114, "var_pct_mtd_vs_orcamento": null, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}]}, {"name": "Crédito", "products": [{"id": "4", "name": "Fatura Protegida", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 3719, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": -0.0697, "mtd": 92071, "var_pct_mtd_vs_mes_anterior": 0.034, "var_pct_mtd_vs_forecast": 0.0978, "var_pct_mtd_vs_orcamento": 0.6889, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 2892, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.0313, "mtd": 60740, "var_pct_mtd_vs_mes_anterior": 0.082, "var_pct_mtd_vs_forecast": 0.0694, "var_pct_mtd_vs_orcamento": 0.1956, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "5", "name": "Prestamista CP+BNPL", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 0, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": null, "mtd": 236129, "var_pct_mtd_vs_mes_anterior": -0.035, "var_pct_mtd_vs_forecast": -0.0146, "var_pct_mtd_vs_orcamento": -0.4521, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 10781, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.0164, "mtd": 283715, "var_pct_mtd_vs_mes_anterior": -0.032, "var_pct_mtd_vs_forecast": 0.0114, "var_pct_mtd_vs_orcamento": -0.1175, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "5.1", "name": "Prestamista CDT", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 0, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": null, "mtd": 236663, "var_pct_mtd_vs_mes_anterior": -0.107, "var_pct_mtd_vs_forecast": -0.1628, "var_pct_mtd_vs_orcamento": -0.0031, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 11301, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": -0.0523, "mtd": 185821, "var_pct_mtd_vs_mes_anterior": -0.215, "var_pct_mtd_vs_forecast": 0.0232, "var_pct_mtd_vs_orcamento": 0.1707, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "6", "name": "Proteção FGTS", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 6101, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.4917, "mtd": 104009, "var_pct_mtd_vs_mes_anterior": -0.049, "var_pct_mtd_vs_forecast": 0.3647, "var_pct_mtd_vs_orcamento": 1.0668, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 5627, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": -0.0744, "mtd": 110111, "var_pct_mtd_vs_mes_anterior": -0.052, "var_pct_mtd_vs_forecast": 0.17, "var_pct_mtd_vs_orcamento": null, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "15", "name": "Seguro Crédito do Trabalhador", "has_realtime": false, "is_consortio": false, "vendas": {"vendas_dia": 0, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": null, "mtd": 40, "var_pct_mtd_vs_mes_anterior": -0.273, "var_pct_mtd_vs_forecast": -0.4641, "var_pct_mtd_vs_orcamento": -0.8935, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 0, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": null, "mtd": 5, "var_pct_mtd_vs_mes_anterior": -0.956, "var_pct_mtd_vs_forecast": -0.729, "var_pct_mtd_vs_orcamento": -0.729, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}]}, {"name": "Bens", "products": [{"id": "1", "name": "Carteira Protegida", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 30943, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.0107, "mtd": 741832, "var_pct_mtd_vs_mes_anterior": 0.035, "var_pct_mtd_vs_forecast": 0.1638, "var_pct_mtd_vs_orcamento": 0.1498, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 29931, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.1937, "mtd": 808123, "var_pct_mtd_vs_mes_anterior": 0.162, "var_pct_mtd_vs_forecast": 0.0142, "var_pct_mtd_vs_orcamento": 0.2649, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "2", "name": "Seguro Celular", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 1550, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": -0.0417, "mtd": 41558, "var_pct_mtd_vs_mes_anterior": 0.091, "var_pct_mtd_vs_forecast": 0.2387, "var_pct_mtd_vs_orcamento": 0.0112, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 1351, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.117, "mtd": 32414, "var_pct_mtd_vs_mes_anterior": 0.088, "var_pct_mtd_vs_forecast": 0.0072, "var_pct_mtd_vs_orcamento": -0.1063, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "8", "name": "Seguro Residencial", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 253, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.1158, "mtd": 5707, "var_pct_mtd_vs_mes_anterior": -0.048, "var_pct_mtd_vs_forecast": -0.0279, "var_pct_mtd_vs_orcamento": -0.1277, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 247, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.2063, "mtd": 5832, "var_pct_mtd_vs_mes_anterior": -0.038, "var_pct_mtd_vs_forecast": -0.0001, "var_pct_mtd_vs_orcamento": -0.0195, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "7", "name": "Assistência Residencial", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 112, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.0394, "mtd": 2677, "var_pct_mtd_vs_mes_anterior": 0.095, "var_pct_mtd_vs_forecast": 0.1006, "var_pct_mtd_vs_orcamento": -0.4272, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 193, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.2063, "mtd": 4330, "var_pct_mtd_vs_mes_anterior": -0.034, "var_pct_mtd_vs_forecast": -0.0605, "var_pct_mtd_vs_orcamento": -0.0224, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "14", "name": "Seguro Franquia", "has_realtime": true, "is_consortio": false, "vendas": {"vendas_dia": 21, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": 0.5556, "mtd": 297, "var_pct_mtd_vs_mes_anterior": 0.169, "var_pct_mtd_vs_forecast": 0.1804, "var_pct_mtd_vs_orcamento": -0.4038, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 8, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": -0.2558, "mtd": 210, "var_pct_mtd_vs_mes_anterior": 0.25, "var_pct_mtd_vs_forecast": 0.0792, "var_pct_mtd_vs_orcamento": -0.1817, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}]}, {"name": "Consórcio", "products": [{"id": "imoveis", "name": "Imóveis", "has_realtime": false, "is_consortio": true, "vendas": {"vendas_dia": 0, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": null, "mtd": null, "var_pct_mtd_vs_mes_anterior": null, "var_pct_mtd_vs_forecast": null, "var_pct_mtd_vs_orcamento": null, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 0, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": null, "mtd": null, "var_pct_mtd_vs_mes_anterior": null, "var_pct_mtd_vs_forecast": null, "var_pct_mtd_vs_orcamento": null, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "veiculos", "name": "Veículos", "has_realtime": false, "is_consortio": true, "vendas": {"vendas_dia": 0, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": null, "mtd": null, "var_pct_mtd_vs_mes_anterior": null, "var_pct_mtd_vs_forecast": null, "var_pct_mtd_vs_orcamento": null, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 0, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": null, "mtd": null, "var_pct_mtd_vs_mes_anterior": null, "var_pct_mtd_vs_forecast": null, "var_pct_mtd_vs_orcamento": null, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}, {"id": "motos", "name": "Motos", "has_realtime": false, "is_consortio": true, "vendas": {"vendas_dia": 0, "vendas_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": -1.0, "mtd": 20, "var_pct_mtd_vs_mes_anterior": -0.2, "var_pct_mtd_vs_forecast": null, "var_pct_mtd_vs_orcamento": null, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}, "cancelamentos": {"cancel_dia": 0, "cancel_dia_label": "D-1", "hora_atual": null, "var_pct_vs_4s": -1.0, "mtd": 79, "var_pct_mtd_vs_mes_anterior": 0.082, "var_pct_mtd_vs_forecast": null, "var_pct_mtd_vs_orcamento": null, "titulo_mtd": "MTD — Acumulativo do mês até ontem", "titulo_mes_anterior": "Mês anterior (mesmo período)"}}]}]};
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+const fmt = n => {
+  if(n==null||n===undefined) return '—';
+  if(typeof n==='string') return n;
+  return Math.round(n).toLocaleString('pt-BR');
+};
+const fmtPct = v => {
+  if(v==null||v===undefined) return '—';
+  const x = v*100;
+  return (x>0?'+':'')+x.toFixed(1)+'%';
+};
+const varClass = (v, isCancel=false) => {
+  if(v==null||v===undefined) return 'neu';
+  const pos = v>=0;
+  return (pos===!isCancel) ? 'pos' : 'neg';
+};
+const varArrow = v => v==null?'':v>=0?'▲':'▼';
+
+// ── Build slides ──────────────────────────────────────────────────────────────
+const slides = [];
+const container = document.getElementById('slides');
+const genDate = window.DATA.generated_at;
+const squads = window.DATA.squads;
+
+// Total de páginas: 4 squads × 2 (Vendas + Cancelamentos) = 8
+const totalPages = squads.length * 2;
+let pageNum = 0;
+
+squads.forEach(squad => {
+  // ── Página de Vendas ──
+  pageNum++;
+  const slideV = document.createElement('div');
+  slideV.className = 'slide';
+
+  let rowsV = '';
+  squad.products.forEach(prod => {
+    const v = prod.vendas;
+    const diaLabel = v.vendas_dia_label || 'D-1';
+    const horaTxt = v.hora_atual != null ? ` <span class="sublabel">(${v.hora_atual}h)</span>` : '';
+    const var4sCls = varClass(v.var_pct_vs_4s, false);
+    const varMtCls = varClass(v.var_pct_mtd_vs_mes_anterior, false);
+    const varFcCls = varClass(v.var_pct_mtd_vs_forecast, false);
+    const varOrCls = varClass(v.var_pct_mtd_vs_orcamento, false);
+
+    rowsV += `<tr>
+      <td>${prod.name}</td>
+      <td><span class="num">${fmt(v.vendas_dia)}</span>${horaTxt}</td>
+      <td><span class="var ${var4sCls}">${varArrow(v.var_pct_vs_4s)} ${fmtPct(v.var_pct_vs_4s)}</span></td>
+      <td><span class="num">${fmt(v.mtd)}</span></td>
+      <td><span class="var ${varMtCls}">${varArrow(v.var_pct_mtd_vs_mes_anterior)} ${fmtPct(v.var_pct_mtd_vs_mes_anterior)}</span></td>
+      <td><span class="var ${varFcCls}">${varArrow(v.var_pct_mtd_vs_forecast)} ${fmtPct(v.var_pct_mtd_vs_forecast)}</span></td>
+      <td><span class="var ${varOrCls}">${varArrow(v.var_pct_mtd_vs_orcamento)} ${fmtPct(v.var_pct_mtd_vs_orcamento)}</span></td>
+    </tr>`;
+  });
+
+  slideV.innerHTML = `
+    <div class="header">
+      <div class="header-logo">PicPay</div>
+      <div class="header-divider"></div>
+      <div class="header-squad">${squad.name}</div>
+      <div class="header-divider"></div>
+      <div class="header-title">Vendas</div>
+      <div class="header-page">${pageNum} / ${totalPages}</div>
+      <div class="header-divider"></div>
+      <div class="header-date">Atualizado em ${genDate}</div>
+    </div>
+    <div class="body">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>${squad.products[0]?.vendas?.vendas_dia_label || 'D-1'} / Hoje</th>
+              <th>Var % vs 4 sem.</th>
+              <th>MTD</th>
+              <th>Var % MTD vs Mês Ant.</th>
+              <th>Var % MTD vs Forecast</th>
+              <th>Var % MTD vs Orçamento</th>
+            </tr>
+          </thead>
+          <tbody>${rowsV}</tbody>
+        </table>
+      </div>
+    </div>`;
+  container.appendChild(slideV);
+  slides.push({el:slideV, dur:20000, progressPct:pageNum/totalPages*100});
+
+  // ── Página de Cancelamentos ──
+  pageNum++;
+  const slideC = document.createElement('div');
+  slideC.className = 'slide';
+
+  let rowsC = '';
+  squad.products.forEach(prod => {
+    const c = prod.cancelamentos;
+    const diaLabel = c.cancel_dia_label || 'D-1';
+    const horaTxt = c.hora_atual != null ? ` <span class="sublabel">(${c.hora_atual}h)</span>` : '';
+    const var4sCls = varClass(c.var_pct_vs_4s, true);
+    const varMtCls = varClass(c.var_pct_mtd_vs_mes_anterior, true);
+    const varFcCls = varClass(c.var_pct_mtd_vs_forecast, true);
+    const varOrCls = varClass(c.var_pct_mtd_vs_orcamento, true);
+
+    rowsC += `<tr>
+      <td>${prod.name}</td>
+      <td><span class="num">${fmt(c.cancel_dia)}</span>${horaTxt}</td>
+      <td><span class="var ${var4sCls}">${varArrow(c.var_pct_vs_4s)} ${fmtPct(c.var_pct_vs_4s)}</span></td>
+      <td><span class="num">${fmt(c.mtd)}</span></td>
+      <td><span class="var ${varMtCls}">${varArrow(c.var_pct_mtd_vs_mes_anterior)} ${fmtPct(c.var_pct_mtd_vs_mes_anterior)}</span></td>
+      <td><span class="var ${varFcCls}">${varArrow(c.var_pct_mtd_vs_forecast)} ${fmtPct(c.var_pct_mtd_vs_forecast)}</span></td>
+      <td><span class="var ${varOrCls}">${varArrow(c.var_pct_mtd_vs_orcamento)} ${fmtPct(c.var_pct_mtd_vs_orcamento)}</span></td>
+    </tr>`;
+  });
+
+  slideC.innerHTML = `
+    <div class="header">
+      <div class="header-logo">PicPay</div>
+      <div class="header-divider"></div>
+      <div class="header-squad">${squad.name}</div>
+      <div class="header-divider"></div>
+      <div class="header-title">Cancelamentos</div>
+      <div class="header-page">${pageNum} / ${totalPages}</div>
+      <div class="header-divider"></div>
+      <div class="header-date">Atualizado em ${genDate}</div>
+    </div>
+    <div class="body">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>${squad.products[0]?.cancelamentos?.cancel_dia_label || 'D-1'} / Hoje</th>
+              <th>Var % vs 4 sem.</th>
+              <th>MTD</th>
+              <th>Var % MTD vs Mês Ant.</th>
+              <th>Var % MTD vs Forecast</th>
+              <th>Var % MTD vs Orçamento</th>
+            </tr>
+          </thead>
+          <tbody>${rowsC}</tbody>
+        </table>
+      </div>
+    </div>`;
+  container.appendChild(slideC);
+  slides.push({el:slideC, dur:20000, progressPct:pageNum/totalPages*100});
+});
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+let current = 0;
+let timer = null;
+
+function showSlide(idx) {
+  slides[current].el.classList.remove('active');
+  current = (idx + slides.length) % slides.length;
+  const s = slides[current];
+  s.el.classList.add('active');
+  const gp = document.getElementById('global-progress');
+  if(gp) gp.style.width = (s.progressPct||0) + '%';
+  clearTimeout(timer);
+  timer = setTimeout(() => showSlide(current+1), s.dur);
+}
+
+showSlide(0);
+
+// ── Viewport scaling proporcional ─────────────────────────────────────────────
+(function scaleApp() {
+  const wrapper = document.getElementById('slides');
+  function resize() {
+    const sx = window.innerWidth  / 1920;
+    const sy = window.innerHeight / 1080;
+    const s  = Math.min(sx, sy);
+    const slideH = Math.round(window.innerHeight / s);
+    document.documentElement.style.setProperty('--slide-h', slideH + 'px');
+    wrapper.style.transformOrigin = 'top left';
+    wrapper.style.transform       = `scale(${s})`;
+    wrapper.style.position        = 'absolute';
+    wrapper.style.left            = ((window.innerWidth  - 1920 * s) / 2) + 'px';
+    wrapper.style.top             = '0px';
+    document.body.style.width     = window.innerWidth  + 'px';
+    document.body.style.height    = window.innerHeight + 'px';
+    document.body.style.overflow  = 'hidden';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+})();
+</script>
+</body>
+</html>
