@@ -46,7 +46,8 @@ tbody tr.row-total{background:rgba(33,150,83,0.12);border-top:2px solid var(--gr
 tbody tr.row-total td{font-weight:700;font-size:18px}
 tbody tr.row-total td:first-child{border-left:4px solid #21D375}
 tbody tr.row-money{background:rgba(0,191,255,0.10);border-top:2px solid var(--blue);border-bottom:2px solid var(--blue)}
-tbody tr.row-money td:first-child{border-left:4px solid var(--blue);color:#DDF6FF}
+tbody tr.row-money td:first-child{border-left:4px solid var(--blue);color:#DDF6FF;padding-right:8px}
+tbody tr.row-money .money-label{display:inline-block;white-space:nowrap}
 tbody tr.row-money .num{font-size:24px}
 /* Valores numéricos */
 .num{font-variant-numeric:tabular-nums;font-size:28px;font-weight:700}
@@ -166,7 +167,7 @@ squads.forEach(squad => {
     const varFcCreditoCls = varClass(credito.var_pct_mtd_vs_forecast, false);
     const varOrCreditoCls = varClass(credito.var_pct_mtd_vs_orcamento, false);
     rowsV += `<tr class="row-money">
-      <td>Crédito Comercializado</td>
+      <td><span class="money-label">Crédito<br>Comercializado</span></td>
       <td><span class="num">${fmtMoney(credito.credito_ontem)}</span></td>
       <td><span class="num">${fmtMoney(credito.credito_dia)}</span>${horaCredito}</td>
       <td><span class="num">${fmtMoney(credito.media_4s_hoje)}</span><br><span class="var ${var4sCreditoCls}" style="font-size:18px">${varArrow(credito.var_pct_vs_4s)} ${fmtPct(credito.var_pct_vs_4s)}</span><br>${coverageCreditoHtml}</td>
