@@ -113,7 +113,14 @@ const fmtCompact = n => {
   if(abs >= 1_000) return (value / 1_000).toLocaleString('pt-BR', {maximumFractionDigits:0}) + ' mil';
   return fmt(value);
 };
-const fmtMoneyCompact = n => n==null||n===undefined ? '—' : 'R$ ' + fmtCompact(n);
+const fmtMoneyCompact = n => {
+  if(n==null||n===undefined) return '—';
+  const value = Number(n);
+  const abs = Math.abs(value);
+  if(abs >= 1_000_000) return 'R$ ' + (value / 1_000_000).toLocaleString('pt-BR', {maximumFractionDigits:1}) + ' MI';
+  if(abs >= 1_000) return 'R$ ' + (value / 1_000).toLocaleString('pt-BR', {maximumFractionDigits:1}) + ' K';
+  return fmtMoney(value);
+};
 const fmtPct = v => {
   if(v==null||v===undefined) return '—';
   const x = v*100;
@@ -213,13 +220,13 @@ squads.forEach(squad => {
     const varOrCreditoCls = varClass(credito.var_pct_mtd_vs_orcamento, false);
     rowsV += `<tr class="row-money">
       <td><span class="money-label">Crédito<br>Comercializado</span></td>
-      <td><span class="num">${fmtMoney(credito.credito_ontem)}</span></td>
-      <td><span class="num">${fmtMoney(credito.credito_dia)}</span>${horaCredito}</td>
-      <td><span class="num">${fmtMoney(credito.media_4s_hoje)}</span><br><span class="var ${var4sCreditoCls}">${varArrow(credito.var_pct_vs_4s)} ${fmtPct(credito.var_pct_vs_4s)}</span>${coverageCreditoHtml}</td>
-      <td><span class="num">${fmtMoney(credito.mtd)}</span></td>
-      <td class="comparison-cell"><span class="num">${fmtMoney(credito.periodo_comparacao)}</span><br><span class="var ${varMtCreditoCls}">${varArrow(credito.var_pct_mtd_vs_mes_anterior)} ${fmtPct(credito.var_pct_mtd_vs_mes_anterior)}</span></td>
-      <td class="target-cell">${targetHtml(credito.meta_forecast_periodo, credito.meta_forecast_total, credito.var_pct_mtd_vs_forecast, varFcCreditoCls, credito.mtd, fmtMoney, fmtMoneyCompact)}</td>
-      <td class="target-cell">${targetHtml(credito.meta_orcamento_periodo, credito.meta_orcamento_total, credito.var_pct_mtd_vs_orcamento, varOrCreditoCls, credito.mtd, fmtMoney, fmtMoneyCompact)}</td>
+      <td><span class="num">${fmtMoneyCompact(credito.credito_ontem)}</span></td>
+      <td><span class="num">${fmtMoneyCompact(credito.credito_dia)}</span>${horaCredito}</td>
+      <td><span class="num">${fmtMoneyCompact(credito.media_4s_hoje)}</span><br><span class="var ${var4sCreditoCls}">${varArrow(credito.var_pct_vs_4s)} ${fmtPct(credito.var_pct_vs_4s)}</span>${coverageCreditoHtml}</td>
+      <td><span class="num">${fmtMoneyCompact(credito.mtd)}</span></td>
+      <td class="comparison-cell"><span class="num">${fmtMoneyCompact(credito.periodo_comparacao)}</span><br><span class="var ${varMtCreditoCls}">${varArrow(credito.var_pct_mtd_vs_mes_anterior)} ${fmtPct(credito.var_pct_mtd_vs_mes_anterior)}</span></td>
+      <td class="target-cell">${targetHtml(credito.meta_forecast_periodo, credito.meta_forecast_total, credito.var_pct_mtd_vs_forecast, varFcCreditoCls, credito.mtd, fmtMoneyCompact, fmtMoneyCompact)}</td>
+      <td class="target-cell">${targetHtml(credito.meta_orcamento_periodo, credito.meta_orcamento_total, credito.var_pct_mtd_vs_orcamento, varOrCreditoCls, credito.mtd, fmtMoneyCompact, fmtMoneyCompact)}</td>
     </tr>`;
   }
 
