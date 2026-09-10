@@ -117,8 +117,8 @@ const fmtMoneyCompact = n => {
   if(n==null||n===undefined) return '—';
   const value = Number(n);
   const abs = Math.abs(value);
-  if(abs >= 1_000_000) return 'R$ ' + (value / 1_000_000).toLocaleString('pt-BR', {maximumFractionDigits:1}) + ' MI';
-  if(abs >= 1_000) return 'R$ ' + (value / 1_000).toLocaleString('pt-BR', {maximumFractionDigits:1}) + ' K';
+  if(abs >= 1_000_000) return 'R$ ' + (value / 1_000_000).toLocaleString('pt-BR', {minimumFractionDigits:1, maximumFractionDigits:1}) + ' MI';
+  if(abs >= 1_000) return 'R$ ' + (value / 1_000).toLocaleString('pt-BR', {minimumFractionDigits:1, maximumFractionDigits:1}) + ' K';
   return fmtMoney(value);
 };
 const fmtPct = v => {
